@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 """Tuneup assignment"""
 
-__author__ = "???"
+__author__ = "Rob Spears (GitHub: Forty9Unbeaten)"
 
 import cProfile
 import pstats
 import functools
+import timeit
 
 
 def profile(func):
@@ -45,7 +46,38 @@ def find_duplicate_movies(src):
 
 def timeit_helper():
     """Part A:  Obtain some profiling measurements using timeit"""
-    # YOUR CODE GOES HERE
+    number = 5
+    repeat = 7
+    t = timeit.Timer(stmt="find_duplicate_movies('movies.txt')",
+                     setup='''
+                    def read_movies(src):
+                         """Returns a list of movie titles"""
+                        print('Reading file: {}'.format(src))
+                        with open(src, 'r') as f:
+                            return f.read().splitlines()
+
+
+                    def is_duplicate(title, movies):
+                        """returns True if title is within movies list"""
+                        for movie in movies:
+                        if movie.lower() == title.lower():
+                            return True
+                        return False
+
+
+                    def find_duplicate_movies(src):
+                        """Returns a list of duplicate movies from a src list"""
+                        movies=read_movies(src)
+                        duplicates=[]
+                        while movies:
+                            movie=movies.pop()
+                            if is_duplicate(movie, movies):
+                            duplicates.append(movie)
+                        return duplicates")''')
+    results = t.repeat(number=number, repeat=repeat)
+    min_time = min([res/number for res in results])
+    print('Best time across {} repeats of {} repeats: {}'.format(
+        repeat, number, min_time))
 
 
 def main():
