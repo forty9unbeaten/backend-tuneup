@@ -47,8 +47,12 @@ def find_duplicate_movies(src):
 
 def timeit_helper():
     '''Part A:  Obtain some profiling measurements using timeit'''
+
+    # change these variables to dictate
+    # how many times timeit runs and repeats
     number = 2
     repeat = 3
+
     t = timeit.Timer(stmt='''t.main()''',
                      setup='''import tuneup as t''')
     results = t.repeat(number=number, repeat=repeat)
