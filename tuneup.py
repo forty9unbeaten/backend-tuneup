@@ -19,7 +19,7 @@ def profile(func):
         duplicates = func(*args, **kwargs)
         pro.disable()
         stats = pstats.Stats(pro)
-        stats.sort_stats('cumulative').print_stats(2)
+        stats.strip_dirs().sort_stats('cumulative').print_stats(2)
         return duplicates
     return pro_wrapper
 
@@ -31,7 +31,8 @@ def read_movies(src):
         return f.read().splitlines()
 
 
-@profile
+# uncomment next line to decorate function with time measurement statistics
+# @profile
 def find_duplicate_movies(src):
     '''Returns a list of duplicate movies from a src list'''
     movies = read_movies(src)
@@ -66,4 +67,6 @@ def main():
 
 
 if __name__ == '__main__':
+    # uncomment next line to gather time measurements with timeit module
+    # timeit_helper()
     main()
