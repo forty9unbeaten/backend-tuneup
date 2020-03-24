@@ -8,7 +8,6 @@ import cProfile
 import pstats
 import functools
 import timeit
-import collections
 
 
 def profile(func):
