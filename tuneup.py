@@ -8,6 +8,7 @@ import cProfile
 import pstats
 import functools
 import timeit
+import collections
 
 
 def profile(func):
@@ -19,7 +20,7 @@ def profile(func):
         duplicates = func(*args, **kwargs)
         pro.disable()
         stats = pstats.Stats(pro)
-        stats.strip_dirs().sort_stats('cumulative').print_stats(2)
+        stats.strip_dirs().sort_stats('cumulative').print_stats()
         return duplicates
     return pro_wrapper
 
@@ -32,17 +33,13 @@ def read_movies(src):
 
 
 # uncomment next line to decorate function with time measurement statistics
-# @profile
+@profile
 def find_duplicate_movies(src):
     '''Returns a list of duplicate movies from a src list'''
     movies = read_movies(src)
-    duplicates = []
-    while movies:
-        title = movies.pop()
-        if title in movies:
-            duplicates.append(title)
-            movies.remove(title)
-    return duplicates
+    unique = set()
+    return set(movie for movie in movies if movie in unique
+               or unique.add(movie))
 
 
 def timeit_helper():
